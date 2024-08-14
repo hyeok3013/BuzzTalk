@@ -8,7 +8,7 @@ class RoomRepository {
 
   RoomRepository(this.httpRequest);
 
-  //cursorID: data를 몇 개나 불러올건지? limit: 한 번에 가져오는 최대 방의 갯수 제한
+  //cursorID: data를 몇 개나 불러올건지? limit: 한 번에 가져오는 최대 방의 갯수 제한 설정
   Future<List<RoomModel>> getRoomList(
       int? topicId, String? cursorId, int limit) async {
     final response = await httpRequest.post('/room/list', {
