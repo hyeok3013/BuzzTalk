@@ -5,10 +5,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
 
-///왜 late로 하셨지? 페이로드가 뭘 의미하는거지?
-///초기화가 복잡한 경우 late로 해야함 + 메모리 효율은 덤 비동기면 생성하는 시점에서 처리가 안되니 late키워드를 사용해서 받음.
-///페이로드는 알람을 눌렀을 때 추가로 얻어올 데이터
-/// 타임존 데이터 초기화
 class LocalNotificationService {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -105,8 +101,8 @@ class LocalNotificationService {
     print(scheduledDate);
   }
 
-  ///예약 취소
-  Future<void> cancelAllNotifications() async {
-    await flutterLocalNotificationsPlugin.cancelAll();
+  /// 특정 ID의 알림 취소
+  Future<void> cancelNotification(int notificationId) async {
+    await flutterLocalNotificationsPlugin.cancel(notificationId);
   }
 }

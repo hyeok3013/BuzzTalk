@@ -1,5 +1,6 @@
 import 'package:alarm_app/src/repository/http_request.dart';
 import 'package:alarm_app/src/repository/room_repository.dart';
+import 'package:alarm_app/src/repository/shared_preferences_repository.dart';
 import 'package:alarm_app/src/view/home/home_view.dart';
 import 'package:alarm_app/util/helper/route.dart';
 import 'package:alarm_app/src/service/local_notification_service.dart';
@@ -14,14 +15,15 @@ String ip = '';
 String serverUrl = 'http://$ip:3000';
 String serverWsUrl = 'http://IP/chat';
 
-late SharedPreferences prefs;
-
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   tz.initializeTimeZones();
   runApp(
     MultiProvider(
       providers: [
         Provider(create: (context) => Http(serverUrl)),
+        Provider(create: (context) => SharedPreferencesRepository(prefs)),
         Provider(create: (context) => LocalNotificationService()),
         Provider(create: (context) => RoomRepository(context.read<Http>())),
       ],

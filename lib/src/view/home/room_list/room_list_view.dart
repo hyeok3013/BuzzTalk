@@ -17,13 +17,16 @@ class RoomListView extends StatefulWidget {
 }
 
 class _RoomListViewState extends State<RoomListView> {
-  late final RoomListViewModel roomListViewModel =
-      RoomListViewModel(roomRepository: context.read());
+  late final RoomListViewModel roomListViewModel = RoomListViewModel(
+    roomRepository: context.read(),
+    localNotificationService: context.read(),
+    sharedPreferencesRepository: context.read(),
+  );
 
   @override
   void initState() {
     super.initState();
-    roomListViewModel.roomListFetch();
+    // roomListViewModel.roomListFetch();
   }
 
   @override
@@ -31,65 +34,16 @@ class _RoomListViewState extends State<RoomListView> {
     return BaseView(
         viewModel: roomListViewModel,
         builder: (context, viewModel) => Scaffold(
-              body: Column(
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        viewModel.roomListFetch();
-                        print(viewModel.roomList);
-                      },
-                      child: Text('fetch')),
-                  ElevatedButton(
-                      onPressed: () {
-                        viewModel.createRoom();
-                        print(viewModel.roomList);
-                      },
-                      child: Text('create')),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: viewModel.roomList.length,
-                      itemBuilder: (context, index) {
-                        final room = viewModel.roomList[index];
-                        return RoomItem(
-                            room: room,
-                            onReserve: () {
-                              context
-                                  .read<LocalNotificationService>()
-                                  .scheduleNotification(
-                                    id: room.topicId,
-                                    title: room.roomId,
-                                    body: '채팅이 시작되었습니다.',
-                                    scheduledDateTime: room.startTime,
-                                  );
-                            });
-                      },
-                    ),
-                  ),
-                ],
+              body: ListView.builder(
+                itemCount: viewModel.roomList.length,
+                itemBuilder: (context, index) {
+                  final room = viewModel.roomList[index];
+                  return RoomItem(
+                    room: room,
+                    onReserve: () => viewModel.bookScheduleChat(room),
+                  );
+                },
               ),
             ));
-  }
-
-  List<RoomModel> _mockRoomData() {
-    return [
-      RoomModel(
-        roomId: '테스트 방 1',
-        startTime: DateTime.now().add(Duration(seconds: 30)),
-        endTime: DateTime.now(),
-        topicId: 101,
-        playerId: '1',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-      RoomModel(
-        roomId: '테스트 방 2',
-        startTime: DateTime.now(),
-        endTime: DateTime.now(),
-        topicId: 102,
-        playerId: '2',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-    ];
   }
 }
