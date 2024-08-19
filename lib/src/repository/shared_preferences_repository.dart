@@ -1,3 +1,4 @@
+import 'package:alarm_app/src/model/room_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesRepository {
@@ -5,15 +6,17 @@ class SharedPreferencesRepository {
 
   SharedPreferencesRepository(this.prefs);
 
-  Future<void> saveReservation(int roomId) async {
-    await prefs.setBool(roomId.toString(), true);
+  Future<void> saveReservation(RoomModel room) async {
+    room.book = true;
+    await prefs.setBool(room.roomId.toString(), room.book);
   }
 
-  bool isReserved(int roomId) {
-    return prefs.getBool(roomId.toString()) ?? false;
+  bool isReserved(RoomModel room) {
+    return prefs.getBool(room.roomId.toString()) ?? false;
   }
 
-  Future<void> removeReservation(int roomId) async {
-    await prefs.remove(roomId.toString());
+  Future<void> removeReservation(RoomModel room) async {
+    room.book = false;
+    await prefs.remove(room.roomId.toString());
   }
 }

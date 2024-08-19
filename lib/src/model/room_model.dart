@@ -5,20 +5,21 @@ class RoomModel {
   final DateTime endTime;
   final int topicId;
   final String playerId;
-  final bool book;
+  bool book;
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  RoomModel(
-      {required this.roomId,
-      required this.roomName,
-      required this.startTime,
-      required this.endTime,
-      required this.topicId,
-      required this.playerId,
-      required this.book,
-      required this.createdAt,
-      required this.updatedAt});
+  RoomModel({
+    required this.roomId,
+    required this.roomName,
+    required this.startTime,
+    required this.endTime,
+    required this.topicId,
+    required this.playerId,
+    this.book = false, // book의 기본값을 false로 설정
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
   factory RoomModel.fromJson(Map<String, dynamic> json) {
     return RoomModel(
@@ -28,7 +29,7 @@ class RoomModel {
       endTime: DateTime.parse(json['end_time']), // Parsing DateTime
       topicId: json['topic_id'],
       playerId: json['player_id'],
-      book: json['book'],
+      book: json['book'] ?? false, // JSON 데이터에서 book 값이 없으면 기본값 false 사용
       createdAt: DateTime.parse(json['created_at']), // Parsing DateTime
       updatedAt: DateTime.parse(json['updated_at']), // Parsing DateTime
     );

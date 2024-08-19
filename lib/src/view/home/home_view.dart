@@ -4,6 +4,7 @@ import 'package:alarm_app/src/view/home/home_view_model.dart';
 import 'package:alarm_app/src/view/home/my_room/my_room_view.dart';
 import 'package:alarm_app/src/view/home/room_list//room_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatelessWidget {
@@ -20,6 +21,7 @@ class HomeView extends StatelessWidget {
             IconButton(
               onPressed: () {
                 print('Navigate FilterView');
+                context.go('/filter');
               },
               icon: const Icon(Icons.filter_alt),
             )

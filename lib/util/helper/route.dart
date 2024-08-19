@@ -8,5 +8,29 @@ import 'package:go_router/go_router.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
-final goRouter = GoRouter(routes: []);
-//
+final goRouter = GoRouter(
+  ///로그인 로직 나중에 추가, 로그인이 되어있으면 /로 아니면 로그인 페이지로
+  initialLocation: '/',
+  routes: [
+    GoRoute(
+      path: '/',
+      name: 'home',
+      builder: (context, state) => const HomeView(),
+    ),
+    GoRoute(
+      path: '/filter',
+      name: 'filter',
+      builder: (context, state) => const TopicFilterView(),
+    ),
+    GoRoute(
+      path: '/chat',
+      name: 'chat',
+      builder: (context, state) => const ChatView(),
+    ),
+    GoRoute(
+      path: '/create',
+      name: 'create',
+      builder: (context, state) => const CreateRoomView(),
+    ),
+  ],
+);

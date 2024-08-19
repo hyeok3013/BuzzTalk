@@ -26,6 +26,7 @@ class RoomRepository {
   Future<bool> createRoom(String roomName, int topicId, String playerId,
       DateTime startTime, DateTime endTime) async {
     final response = await httpRequest.post('/room/create', {
+      'roomId': topicId,
       'roomName': roomName,
       'topicId': topicId,
       'playerId': playerId,

@@ -3,7 +3,7 @@ import 'package:alarm_app/src/service/local_notification_service.dart';
 import 'package:alarm_app/src/service/my_room_service.dart';
 import 'package:alarm_app/src/view/base_view.dart';
 import 'package:alarm_app/src/view/home/my_room/my_room_view_model.dart';
-import 'package:alarm_app/src/view/home/room_item.dart';
+import 'package:alarm_app/src/view/home/room_list/widget/room_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
