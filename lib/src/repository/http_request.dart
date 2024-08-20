@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 //singleTon HTTP URL
 class Http {
   final String baseUrl;
-  static final Http _instance = Http._internal('http://localhost:3000');
+  static final Http _instance = Http._internal('http://192.168.123.102:3000');
 
   factory Http() {
     return _instance;
@@ -13,7 +13,7 @@ class Http {
   Http._internal(this.baseUrl);
 
   // GET 요청
-  Future<Map<String, dynamic>> get(String endpoint) async {
+  Future<dynamic> get(String endpoint) async {
     final response = await http.get(Uri.parse('$baseUrl$endpoint'));
     print(response.body);
     if (response.statusCode == 200) {

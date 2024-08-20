@@ -37,7 +37,7 @@ class HomeView extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            print(viewModel.selectedTopicIds);
+            context.push('/create');
           },
           child: const Icon(Icons.add),
         ),

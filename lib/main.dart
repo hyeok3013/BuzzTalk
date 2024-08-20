@@ -4,6 +4,7 @@ import 'package:alarm_app/src/repository/room_repository.dart';
 import 'package:alarm_app/src/repository/shared_preferences_repository.dart';
 import 'package:alarm_app/src/repository/socket_repository.dart';
 import 'package:alarm_app/src/repository/topic_repository.dart';
+import 'package:alarm_app/src/view/create_room/create_room_view_model.dart';
 import 'package:alarm_app/src/view/filter/topic_filter_view.dart';
 import 'package:alarm_app/src/view/home/home_view.dart';
 import 'package:alarm_app/src/view/chat/chat_view.dart';
@@ -16,7 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-String ip = '';
+String ip = '192.168.123.102';
 String serverUrl = 'http://$ip:3000';
 String serverWsUrl = 'http://$ip:3001/chat';
 
@@ -30,9 +31,13 @@ void main() async {
         Provider(create: (context) => Http()),
         Provider(create: (context) => SharedPreferencesRepository(prefs)),
         Provider(create: (context) => AuthRepository(context.read<Http>())),
+        Provider(create: (context) => SocketRepository(url: serverWsUrl)),
         Provider(create: (context) => LocalNotificationService()),
         Provider(create: (context) => RoomRepository(context.read<Http>())),
         Provider(create: (context) => TopicRepository(context.read<Http>())),
+        ChangeNotifierProvider(
+            create: (context) =>
+                CreateRoomViewModel(context.read<RoomRepository>())),
       ],
       child: const MyApp(),
     ),

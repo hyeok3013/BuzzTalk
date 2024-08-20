@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:alarm_app/src/repository/auth_repository.dart';
 import 'package:alarm_app/src/view/home/home_view.dart';
 import 'package:alarm_app/util/auth_utils.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginViewModel extends ChangeNotifier {
   String _playerId = '';
@@ -67,10 +68,7 @@ class LoginViewModel extends ChangeNotifier {
       notifyListeners();
 
       if (response['status'] == 'success') {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomeView()),
-        );
+        context.go('/');
       } else {
         _playerIdError = response['error'] ?? '로그인 실패';
         notifyListeners();

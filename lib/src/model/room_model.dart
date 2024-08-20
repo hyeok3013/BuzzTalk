@@ -21,16 +21,16 @@ class RoomModel {
 
   factory RoomModel.fromJson(Map<String, dynamic> json) {
     return RoomModel(
-      roomId: json['room_id'],
-      roomName: json['room_name'],
-      startTime: json['selectedTime'] != null
-          ? DateTime.parse(json['selectedTime'])
+      roomId: json['roomId'],
+      roomName: json['roomName'],
+      startTime: json['startTime'] != null
+          ? DateTime.parse(json['startTime'])
           : null, // Parsing DateTime
-      endTime: DateTime.parse(json['end_time']), // Parsing DateTime
-      topicId: json['topic_id'],
-      playerId: json['player_id'],
+      endTime: DateTime.parse(json['endTime']), // Parsing DateTime
+      topicId: json['topicId'],
+      playerId: json['playerId'],
       book: json['book'] ?? false, // JSON 데이터에서 book 값이 없으면 기본값 false 사용
-      updatedAt: DateTime.parse(json['updated_at']), // Parsing DateTime
+      updatedAt: DateTime.parse(json['updatedAt']), // Parsing DateTime
     );
   }
 
