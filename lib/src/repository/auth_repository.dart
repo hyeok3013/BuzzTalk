@@ -28,7 +28,6 @@ class AuthRepository {
     return response;
   }
 
-//TODO: 서버 컨트롤러 수정
   // 비밀번호 변경
   Future<Map<String, dynamic>> changePassword(
       String oldPassword, String newPassword, String newPasswordCheck) async {

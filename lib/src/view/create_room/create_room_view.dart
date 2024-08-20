@@ -92,8 +92,9 @@ class _CreateRoomViewState extends State<CreateRoomView> {
                   },
                   items: viewModel.topics.map((topic) {
                     return DropdownMenuItem<int>(
-                      value: topic['id'],
-                      child: Text(topic['name']),
+                      value: topic['topicId'], // JSON의 'topicId'를 사용해야 함
+                      child:
+                          Text(topic['topicName']), // JSON의 'topicName'을 사용해야 함
                     );
                   }).toList(),
                 ),
