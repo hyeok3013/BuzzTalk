@@ -39,11 +39,12 @@ class RoomItem extends StatelessWidget {
               const SizedBox(height: 5),
               Text('방이름: ${room.roomId}'),
               const SizedBox(height: 15),
-              Text('시작: ${DateTimeHelper.formatDateTime(room.startTime)}'),
-              Text('종료: ${DateTimeHelper.formatDateTime(room.endTime)}'),
+              Text('시작: ${DateTimeHelper.formatDateTime(room.startTime!)}'),
+              Text('종료: ${DateTimeHelper.formatDateTime(room.endTime!)}'),
             ],
           ),
-          room.startTime.isAfter(DateTime.now().toUtc().add(Duration(hours: 9)))
+          room.startTime!
+                  .isAfter(DateTime.now().toUtc().add(Duration(hours: 9)))
 
               ///현재 시간보다 빠름
               ? ElevatedButton(

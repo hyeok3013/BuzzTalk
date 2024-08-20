@@ -1,3 +1,4 @@
+import 'package:alarm_app/src/model/auth_model.dart';
 import 'package:alarm_app/src/model/room_model.dart';
 import 'package:alarm_app/src/repository/socket_repository.dart';
 import 'package:alarm_app/src/view/base_view.dart';
@@ -16,6 +17,7 @@ class ChatView extends StatelessWidget {
       viewModel: ChatViewModel(
         socketRepository: context.read(),
         roomModel: roomModel,
+        authModel: AuthModel(playerId: '123', password: '123'),
       ),
       builder: (BuildContext context, ChatViewModel viewModel) => Scaffold(
         appBar: AppBar(

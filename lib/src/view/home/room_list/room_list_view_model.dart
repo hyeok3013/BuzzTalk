@@ -41,23 +41,18 @@ class RoomListViewModel extends BaseViewModel {
   }
 
   Future<void> createRoom() async {
-    await roomRepository.createRoom(
-      '테스트 방 123',
-      1,
-      '1',
-      DateTime.now().add(Duration(minutes: 1)),
-      DateTime.now().add(Duration(hours: 2)),
-    );
+    await roomRepository
+        .createRoom(RoomModel(roomName: 'roomName', topicId: 1));
     roomListFetch(null);
     notifyListeners();
   }
 
   void bookScheduleChat(RoomModel room) {
     localNotificationService.scheduleNotification(
-      id: room.roomId,
+      id: room.roomId!,
       title: room.roomName,
       body: '채팅이 시작되었습니다.',
-      scheduledDateTime: room.startTime,
+      scheduledDateTime: room.startTime!,
     );
 
     sharedPreferencesRepository.saveReservation(room);
@@ -65,7 +60,7 @@ class RoomListViewModel extends BaseViewModel {
   }
 
   void cancelScheduleChat(RoomModel room) {
-    localNotificationService.cancelNotification(room.roomId);
+    localNotificationService.cancelNotification(room.roomId!);
     sharedPreferencesRepository.removeReservation(room);
     notifyListeners();
   }
