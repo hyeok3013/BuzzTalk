@@ -22,24 +22,9 @@ class RoomRepository {
         .toList();
   }
 
-<<<<<<< HEAD
-  //response:boolean값
-  Future<bool> createRoom(String roomName, int topicId, String playerId,
-      DateTime startTime, DateTime endTime) async {
-    final response = await httpRequest.post('/room/create', {
-      'roomId': topicId,
-      'roomName': roomName,
-      'topicId': topicId,
-      'playerId': playerId,
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime.toIso8601String(),
-    });
-    return response['success'] as bool;
-=======
   Future<Map<String, dynamic>> createRoom(RoomModel roomModel) async {
     final response = await httpRequest.post('/room/create', roomModel.toJson());
     return response;
->>>>>>> feature/auth
   }
 
   //수정

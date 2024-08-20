@@ -26,13 +26,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-<<<<<<< HEAD
-        Provider(create: (context) => Http(serverUrl)),
-        Provider(create: (context) => SharedPreferencesRepository(prefs)),
-        Provider(create: (context) => SocketRepository(url: serverWsUrl)),
-=======
         Provider(create: (context) => Http()),
->>>>>>> feature/auth
         Provider(create: (context) => LocalNotificationService()),
         Provider(create: (context) => RoomRepository(context.read<Http>())),
         Provider(create: (context) => TopicRepository(context.read<Http>())),
@@ -47,13 +41,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     return MaterialApp.router(
       routerConfig: goRouter,
-=======
-    return MaterialApp(
-      home: HomeView(),
->>>>>>> feature/auth
     );
   }
 }
