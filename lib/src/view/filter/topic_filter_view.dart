@@ -1,50 +1,65 @@
 import 'package:alarm_app/src/repository/topic_repository.dart';
+import 'package:alarm_app/src/view/base_view.dart';
 import 'package:alarm_app/src/view/filter/topic_filter_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class TopicFilterView extends StatelessWidget {
+class TopicFilterView extends StatefulWidget {
   const TopicFilterView({super.key});
 
   @override
+  State<TopicFilterView> createState() => _TopicFilterViewState();
+}
+
+class _TopicFilterViewState extends State<TopicFilterView> {
+  late final TopicFilterViewModel topicFilterViewModel =
+      TopicFilterViewModel(topicRepository: context.read());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    topicFilterViewModel.loadTopics();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => TopicFilterViewModel(
-        topicRepository: context.read<TopicRepository>(),
-      )..loadTopics(), //객체를 생성한 후, LoadTopics() 메서드 호출
-      child:
-          Consumer<TopicFilterViewModel>(builder: (context, viewModel, child) {
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text('주제별 필터'),
-            leading: IconButton(
+    return BaseView(
+      viewModel: topicFilterViewModel,
+      builder: (BuildContext context, TopicFilterViewModel viewModel) =>
+          Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('주제별 필터'),
+          leading: IconButton(
+            onPressed: () {
+              //필터 창 닫기
+              // context.go('/');
+              context.pop();
+            },
+            icon: const Icon(
+              Icons.close,
+            ),
+          ),
+          actions: [
+            IconButton(
               onPressed: () {
-                //필터 창 닫기
-                Navigator.pop(context);
+                context.pop(viewModel.selectedTopicIds);
+                print('선택 topic id: ${viewModel.selectedTopicIds}');
               },
               icon: const Icon(
-                Icons.close,
+                Icons.check,
               ),
             ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context, viewModel.selectedTopicIds);
-                  //  selectedTopicIds에 들어가 있는 요소들만 홈 화면에 나오게 한디
-                  print('선택 topic id: ${viewModel.selectedTopicIds}');
-                },
-                icon: const Icon(
-                  Icons.check,
-                ),
-              ),
-            ],
-          ),
-          body: Row(
-            children: [
-              GridView.builder(
+          ],
+        ),
+        body: Row(
+          children: [
+            Expanded(
+              child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, //한 열에 얼마나 널을 것인지
+                  crossAxisCount: 4, //한 열에 얼마나 널을 것인지
                   childAspectRatio: 1, //child 가로 세로 비율
                   crossAxisSpacing: 10, //열 간의 간격
                   mainAxisSpacing: 10, //행 간의 간격
@@ -97,8 +112,7 @@ class TopicFilterView extends StatelessWidget {
                               child: Text(
                                 '$topicRoomCount', //토픽의 개수
                                 style: const TextStyle(
-                                  color: Colors.white,
-                                ),
+                                    color: Colors.white, fontSize: 13),
                               ),
                             ),
                           ),
@@ -108,10 +122,10 @@ class TopicFilterView extends StatelessWidget {
                   );
                 },
               ),
-            ],
-          ),
-        );
-      }),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

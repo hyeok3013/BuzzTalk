@@ -24,9 +24,9 @@ class RoomListViewModel extends BaseViewModel {
   // 방 목록을 서버에서 가져오는 메서드
 
   // 서버에서 방 목록을 가져오는 메서드
-  Future<void> roomListFetch() async {
+  Future<void> roomListFetch(int? topicID) async {
     //여기서 필터로 저정한 내용을 가져와야 함.
-    roomList = await roomRepository.getRoomList(null); // 서버에서 방 목록 가져오기
+    roomList = await roomRepository.getRoomList(topicID); // 서버에서 방 목록 가져오기
 
     // 방 목록을 가져온 후 각 방에 대한 예약 정보를 로컬에서 조회하여 설정
     for (RoomModel room in roomList) {
@@ -36,7 +36,6 @@ class RoomListViewModel extends BaseViewModel {
 
       // 각 방의 예약 정보를 처리하거나 UI에 반영
     }
-
     // 데이터 변경 후 UI 업데이트
     notifyListeners();
   }
@@ -45,11 +44,11 @@ class RoomListViewModel extends BaseViewModel {
     await roomRepository.createRoom(
       '테스트 방 123',
       1,
-      'player123',
-      DateTime.now(),
-      DateTime.now().add(Duration(seconds: 30)),
+      '1',
+      DateTime.now().add(Duration(minutes: 1)),
+      DateTime.now().add(Duration(hours: 2)),
     );
-    roomListFetch();
+    roomListFetch(null);
     notifyListeners();
   }
 

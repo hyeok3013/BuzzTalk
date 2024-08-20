@@ -9,12 +9,9 @@ class TopicModel {
 
   factory TopicModel.fromJson(Map<String, dynamic> json) {
     return TopicModel(
-      topicId: json['topic_id'],
-      topicName: json['topic_name'],
+      topicId: json['topicId'] ?? 0, // topicId가 null일 경우 기본값 0 사용
+      topicName: json['topicName'] ??
+          'Unknown', // topicName이 null일 경우 기본값 'Unknown' 사용
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'topicId': topicId, 'topicName': topicName};
   }
 }

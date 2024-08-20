@@ -19,9 +19,17 @@ class HomeView extends StatelessWidget {
           title: const Text('방 목록'),
           actions: [
             IconButton(
-              onPressed: () {
+              onPressed: () async {
                 print('Navigate FilterView');
-                context.go('/filter');
+
+                // 필터 페이지로 이동하고, 필터 결과를 기다림
+                final selectedTopicIds =
+                    await context.push<List<int>>('/filter');
+
+                if (selectedTopicIds != null) {
+                  // 필터 결과를 RoomListView에 전달
+                  viewModel.updateSelectedTopics(selectedTopicIds);
+                }
               },
               icon: const Icon(Icons.filter_alt),
             )
@@ -29,7 +37,7 @@ class HomeView extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            print('Navigate CreateRoomView');
+            print(viewModel.selectedTopicIds);
           },
           child: const Icon(Icons.add),
         ),
@@ -42,7 +50,7 @@ class HomeView extends StatelessWidget {
           ],
         ),
         body: [
-          RoomListView(),
+          RoomListView(selectedTopicIds: viewModel.selectedTopicIds),
           MyRoomView(),
         ].elementAt(viewModel.currentIndex),
       ),

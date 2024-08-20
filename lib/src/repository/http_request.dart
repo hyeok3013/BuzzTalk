@@ -1,12 +1,19 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+//singleTon HTTP URL
 class Http {
   final String baseUrl;
-  Http(this.baseUrl);
+  static final Http _instance = Http._internal('http://localhost:3000');
 
-  //연결 설정
-  Future<dynamic> get(String endpoint) async {
+  factory Http() {
+    return _instance;
+  }
+
+  Http._internal(this.baseUrl);
+
+  // GET 요청
+  Future<Map<String, dynamic>> get(String endpoint) async {
     final response = await http.get(Uri.parse('$baseUrl$endpoint'));
     print(response.body);
     if (response.statusCode == 200) {
@@ -16,6 +23,7 @@ class Http {
     }
   }
 
+  // POST 요청
   Future<Map<String, dynamic>> post(
       String endpoint, Map<String, dynamic> data) async {
     final response = await http.post(

@@ -10,7 +10,9 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class RoomListView extends StatefulWidget {
-  const RoomListView({super.key});
+  final List<int> selectedTopicIds; // 필터된 주제 ID 목록
+
+  const RoomListView({super.key, required this.selectedTopicIds});
 
   @override
   State<RoomListView> createState() => _RoomListViewState();
@@ -28,7 +30,9 @@ class _RoomListViewState extends State<RoomListView> {
     super.initState();
 
     // roomListViewModel.createRoom();
-    roomListViewModel.roomListFetch();
+
+    roomListViewModel.roomListFetch(1);
+    print(DateTime.now());
   }
 
   @override
