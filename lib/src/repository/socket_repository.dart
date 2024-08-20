@@ -1,4 +1,5 @@
 import 'package:alarm_app/main.dart';
+import 'package:alarm_app/src/model/auth_model.dart';
 import 'package:alarm_app/src/model/msg_model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -9,12 +10,12 @@ class SocketRepository {
   SocketRepository({required this.url});
 
   // 소켓 연결 설정(특정 플레이어 아이디에 대해 String으로 연결)
-  void initSocket(String playerId) {
+  void initSocket(AuthModel user) {
     socket = IO.io(
       url,
       IO.OptionBuilder()
           .setTransports(['websocket'])
-          .setQuery({'playerId': playerId}) // playerId를 쿼리로 전송
+          .setQuery({'playerId': user.playerId}) // playerId를 쿼리로 전송
           .enableAutoConnect()
           .build(),
     );

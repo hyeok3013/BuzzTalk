@@ -1,4 +1,5 @@
 import 'package:alarm_app/src/model/room_model.dart';
+import 'package:alarm_app/src/view/auth/login_view.dart';
 import 'package:alarm_app/src/view/chat/chat_view.dart';
 import 'package:alarm_app/src/view/home/room_list/room_list_view.dart';
 import 'package:alarm_app/src/view/create_room//create_room_view.dart';
@@ -39,6 +40,11 @@ final goRouter = GoRouter(
       path: '/create',
       name: 'create',
       builder: (context, state) => const CreateRoomView(),
+    ),
+    GoRoute(
+      path: '/login',
+      name: 'login',
+      builder: (context, state) => Login(),
     ),
   ],
 );
