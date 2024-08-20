@@ -1,3 +1,4 @@
+import 'package:alarm_app/src/repository/auth_repository.dart';
 import 'package:alarm_app/src/repository/http_request.dart';
 import 'package:alarm_app/src/repository/room_repository.dart';
 import 'package:alarm_app/src/repository/shared_preferences_repository.dart';
@@ -27,6 +28,8 @@ void main() async {
     MultiProvider(
       providers: [
         Provider(create: (context) => Http()),
+        Provider(create: (context) => SharedPreferencesRepository(prefs)),
+        Provider(create: (context) => AuthRepository(context.read<Http>())),
         Provider(create: (context) => LocalNotificationService()),
         Provider(create: (context) => RoomRepository(context.read<Http>())),
         Provider(create: (context) => TopicRepository(context.read<Http>())),
