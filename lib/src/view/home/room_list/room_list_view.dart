@@ -32,6 +32,7 @@ class _RoomListViewState extends State<RoomListView> {
     // roomListViewModel.createRoom();
 
     roomListViewModel.roomListFetch(1);
+    print(DateTime.now());
   }
 
   @override

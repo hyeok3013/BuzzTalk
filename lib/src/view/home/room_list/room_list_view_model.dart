@@ -45,7 +45,7 @@ class RoomListViewModel extends BaseViewModel {
       '테스트 방 123',
       1,
       '1',
-      DateTime.now(),
+      DateTime.now().add(Duration(minutes: 1)),
       DateTime.now().add(Duration(hours: 2)),
     );
     roomListFetch(null);

@@ -43,7 +43,7 @@ class RoomItem extends StatelessWidget {
               Text('종료: ${DateTimeHelper.formatDateTime(room.endTime)}'),
             ],
           ),
-          room.startTime.isAfter(DateTime.now())
+          room.startTime.isAfter(DateTime.now().toUtc().add(Duration(hours: 9)))
 
               ///현재 시간보다 빠름
               ? ElevatedButton(
@@ -52,28 +52,14 @@ class RoomItem extends StatelessWidget {
                 )
 
               ///현재 시간보다 느림
-              : Row(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue, // 배경색
-                          foregroundColor: Colors.white),
-                      onPressed: () {
-                        print('방에 참가하는 로직');
-                      },
-                      child: const Text('참여'),
-                    ),
-                    // SizedBox(
-                    //   width: 10,
-                    // ),
-                    // //이 부분이 있을 필요가 있나? 방이 열렸는데 굳이 취소를?
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     print('예약 취소');
-                    //   },
-                    //   child: const Text('취소'),
-                    // )
-                  ],
+              : ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue, // 배경색
+                      foregroundColor: Colors.white),
+                  onPressed: () {
+                    context.push('/chat', extra: room);
+                  },
+                  child: const Text('참여'),
                 )
         ],
       ),

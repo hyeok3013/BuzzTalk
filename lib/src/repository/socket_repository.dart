@@ -4,11 +4,14 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class SocketRepository {
   late IO.Socket socket;
+  final String url;
+
+  SocketRepository({required this.url});
 
   // 소켓 연결 설정(특정 플레이어 아이디에 대해 String으로 연결)
   void initSocket(String playerId) {
     socket = IO.io(
-      'http://localhost:3001/chat',
+      url,
       IO.OptionBuilder()
           .setTransports(['websocket'])
           .setQuery({'playerId': playerId}) // playerId를 쿼리로 전송
@@ -37,22 +40,22 @@ class SocketRepository {
   }
 
   // 방에 접속
-  void joinRoom(String roomId, String playerId) {
+  void joinRoom(int roomId, String playerId) {
     socket.emit('join', {'roomId': roomId, 'playerId': playerId});
   }
 
   // 방에서 나가기
-  void exitRoom(String roomId) {
+  void exitRoom(int roomId) {
     socket.emit('exit', {'roomId': roomId});
   }
 
   // 메시지 전송
-  void sendMessage(String roomId, String msg, String playerId) {
+  void sendMessage(int roomId, String msg, String playerId) {
     socket.emit('msg', {'roomId': roomId, 'msg': msg, 'playerId': playerId});
   }
 
   // 특정 방의 사용자 목록 요청(방에 있는 모두에게 뿌려줌)
-  void getUserList(String roomId) {
+  void getUserList(int roomId) {
     socket.emit('getUserList', roomId);
   }
 

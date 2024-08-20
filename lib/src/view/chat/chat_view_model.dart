@@ -1,8 +1,9 @@
 import 'package:alarm_app/src/repository/socket_repository.dart';
+import 'package:alarm_app/src/view/base_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:alarm_app/src/model/room_model.dart'; // RoomModel 임포트
 
-class ChatViewModel with ChangeNotifier {
+class ChatViewModel extends BaseViewModel {
   final SocketRepository socketRepository; // SocketRepository 인스턴스
   final RoomModel roomModel; // RoomModel 인스턴스
   List<Map<String, dynamic>> messages =
@@ -16,9 +17,10 @@ class ChatViewModel with ChangeNotifier {
     required this.roomModel,
   }) {
     // 생성 시 소켓 연결 초기화
+
     socketRepository.initSocket(roomModel.playerId);
     // 방에 접속
-    socketRepository.joinRoom(roomModel.roomId as String, roomModel.playerId);
+    socketRepository.joinRoom(roomModel.roomId, roomModel.playerId);
 
     // 메시지 수신 리스너 등록
     socketRepository.socket.on('msg', (data) {
@@ -38,15 +40,15 @@ class ChatViewModel with ChangeNotifier {
     if (controller.text.isNotEmpty) {
       final message = controller.text;
       socketRepository.sendMessage(
-          roomModel.roomId as String, message, roomModel.playerId);
-      addMessage(message, roomModel.playerId); // 내 메시지로 추가
+          roomModel.roomId, message, roomModel.playerId);
+      // addMessage(message, roomModel.playerId); // 내 메시지로 추가
       controller.clear();
     }
   }
 
   // 방에서 나가기
   void exitRoom() {
-    socketRepository.exitRoom(roomModel.roomId as String);
+    socketRepository.exitRoom(roomModel.roomId);
     notifyListeners();
   }
 

@@ -1,3 +1,4 @@
+import 'package:alarm_app/src/model/room_model.dart';
 import 'package:alarm_app/src/view/chat/chat_view.dart';
 import 'package:alarm_app/src/view/home/room_list/room_list_view.dart';
 import 'package:alarm_app/src/view/create_room//create_room_view.dart';
@@ -25,7 +26,14 @@ final goRouter = GoRouter(
     GoRoute(
       path: '/chat',
       name: 'chat',
-      builder: (context, state) => const ChatView(),
+      builder: (context, state) {
+        // 전달된 값을 state.extra로 받음
+        final RoomModel roomModel = state.extra as RoomModel;
+
+        return ChatView(
+          roomModel: roomModel, // 전달된 roomModel 사용
+        );
+      },
     ),
     GoRoute(
       path: '/create',
