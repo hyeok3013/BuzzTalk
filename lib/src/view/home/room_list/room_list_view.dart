@@ -42,7 +42,7 @@ class _RoomListViewState extends State<RoomListView> {
                       onPressed: () {
                         roomListViewModel.createRoom();
                       },
-                      child: Text('create')),
+                      child: const Text('create')),
                   Expanded(
                     child: ListView.builder(
                       itemCount: viewModel.roomList.length,
