@@ -17,17 +17,20 @@ class ChatViewModel extends BaseViewModel {
     required this.roomModel,
   }) {
     // 생성 시 소켓 연결 초기화
+    final playerId = roomModel.playerId ?? ''; // Null 체크 및 기본값 설정
+    final roomId = roomModel.roomId?.toString() ?? ''; // Null 체크 및 기본값 설정
 
-    socketRepository.initSocket(roomModel.playerId);
-    // 방에 접속
-    socketRepository.joinRoom(roomModel.roomId, roomModel.playerId);
+    if (playerId.isNotEmpty && roomId.isNotEmpty) {
+      socketRepository.initSocket(playerId);
+      // 방에 접속
+      socketRepository.joinRoom(roomId as int, playerId);
 
-    // 메시지 수신 리스너 등록
-    socketRepository.socket.on('msg', (data) {
-      addMessage(data['msg'], data['playerId']);
-    });
+      // 메시지 수신 리스너 등록
+      socketRepository.socket.on('msg', (data) {
+        addMessage(data['msg'], data['playerId']);
+      });
+    }
   }
-
   // 메시지를 리스트에 추가하고 UI 업데이트 알림
   void addMessage(String message, String senderId) {
     bool isMine = senderId == roomModel.playerId; // 메시지 보낸 사람이 나인지 확인
@@ -39,17 +42,24 @@ class ChatViewModel extends BaseViewModel {
   void sendMessage() {
     if (controller.text.isNotEmpty) {
       final message = controller.text;
-      socketRepository.sendMessage(
-          roomModel.roomId, message, roomModel.playerId);
-      // addMessage(message, roomModel.playerId); // 내 메시지로 추가
-      controller.clear();
+      final playerId = roomModel.playerId ?? '';
+      final roomId = roomModel.roomId?.toString() ?? '';
+      if (playerId.isNotEmpty && roomId.isNotEmpty) {
+        socketRepository.sendMessage(roomId as int, message, playerId);
+        controller.clear();
+      }
     }
   }
 
+  // addMessage(message, roomModel.playerId); // 내 메시지로 추가
+
   // 방에서 나가기
   void exitRoom() {
-    socketRepository.exitRoom(roomModel.roomId);
-    notifyListeners();
+    final roomId = roomModel.roomId?.toString() ?? '';
+    if (roomId.isNotEmpty) {
+      socketRepository.exitRoom(roomId as int);
+      notifyListeners();
+    }
   }
 
   @override
