@@ -29,28 +29,26 @@ class _HomeViewState extends State<HomeView> {
       viewModel: HomeViewModel(),
       builder: (BuildContext context, HomeViewModel viewModel) => Scaffold(
         appBar: AppBar(
-          title: const Text('방 목록'),
+          title: Text(viewModel.currentIndex == 0 ? '방 목록' : "마이"),
           leading: Container(),
           actions: [
-            IconButton(
-              onPressed: () async {
-                // 필터 페이지로 이동하고, 필터 결과를 기다림
-                final selectedTopicIds =
-                    await context.push<List<int>>('/filter');
+            viewModel.currentIndex == 0
+                ? IconButton(
+                    onPressed: () async {
+                      // 필터 페이지로 이동하고, 필터 결과를 기다림
+                      final selectedTopicIds =
+                          await context.push<List<int>>('/filter');
 
-                if (selectedTopicIds != null) {
-                  // 필터 결과를 사용하여 상태 업데이트
-                  viewModel.updateSelectedTopics(selectedTopicIds);
-
-                  // 페이지를 완전히 다시 빌드하여 initState가 호출되도록 함
-                  context.replace('/'); // 현재 경로를 다시 로드하여 페이지 새로 빌드
-                }
-              },
-              icon: const Icon(
-                Icons.filter_alt,
-                color: Color.fromARGB(255, 20, 42, 128),
-              ),
-            )
+                      if (selectedTopicIds != null) {
+                        // 필터 결과를 사용하여 상태 업데이트
+                        viewModel.updateSelectedTopics(selectedTopicIds);
+                        // 페이지를 완전히 다시 빌드하여 initState가 호출되도록 함
+                        context.replace('/'); // 현재 경로를 다시 로드하여 페이지 새로 빌드
+                      }
+                    },
+                    icon: const Icon(Icons.filter_alt),
+                  )
+                : Container(),
           ],
         ),
         floatingActionButton: FloatingActionButton(
