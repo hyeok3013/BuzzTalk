@@ -64,8 +64,8 @@ class LocalNotificationService {
     required DateTime scheduledDateTime,
     String? payload,
   }) async {
-    final tz.TZDateTime scheduledDate =
-        tz.TZDateTime.from(scheduledDateTime, tz.local);
+    final tz.TZDateTime scheduledDate = tz.TZDateTime.from(
+        scheduledDateTime.subtract(const Duration(hours: 9)), tz.local);
 
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
@@ -99,6 +99,18 @@ class LocalNotificationService {
         payload: payload);
 
     print(scheduledDate);
+    print('현재시각');
+    print(tz.local);
+    print(tz.TZDateTime.now(tz.local)); // 로컬 시간대의 현재 시각
+
+    print(DateTime.now());
+    print(scheduledDate.isBefore(DateTime.now())); // 예약 시간이 현재보다 이전인지 확인
+
+// 시간 차이를 계산하고 출력
+    final difference = scheduledDate.difference(DateTime.now());
+    print('Difference in hours: ${difference.inHours} hours');
+    print(
+        'Difference in minutes: ${difference.inMinutes.remainder(60)} minutes');
   }
 
   /// 특정 ID의 알림 취소

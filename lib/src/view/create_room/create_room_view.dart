@@ -54,7 +54,7 @@ class _CreateRoomViewState extends State<CreateRoomView> {
                           );
 
                           if (viewModel.errorMessage == null) {
-                            context.go('/');
+                            context.push('/');
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(viewModel.errorMessage!)),

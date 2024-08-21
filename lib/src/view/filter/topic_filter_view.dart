@@ -36,7 +36,7 @@ class _TopicFilterViewState extends State<TopicFilterView> {
             onPressed: () {
               //필터 창 닫기
               // context.go('/');
-              context.pop();
+              context.replace('/');
             },
             icon: const Icon(
               Icons.close,
@@ -45,7 +45,8 @@ class _TopicFilterViewState extends State<TopicFilterView> {
           actions: [
             IconButton(
               onPressed: () {
-                context.pop(viewModel.selectedTopicIds);
+                context.replace('/',
+                    extra: viewModel.selectedTopicIds); // go_router에서 값을 반환
                 print('선택 topic id: ${viewModel.selectedTopicIds}');
               },
               icon: const Icon(

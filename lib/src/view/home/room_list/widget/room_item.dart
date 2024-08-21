@@ -1,3 +1,4 @@
+import 'package:alarm_app/src/model/topic_model.dart';
 import 'package:alarm_app/src/service/my_room_service.dart';
 import 'package:alarm_app/src/service/topic_service.dart';
 import 'package:alarm_app/src/model/room_model.dart';
@@ -10,10 +11,14 @@ import 'package:alarm_app/src/model/room_model.dart';
 
 class RoomItem extends StatelessWidget {
   final RoomModel room;
+  final List<TopicModel> topicList = [
+    TopicModel(topicId: 1, topicName: '토픽 1'),
+    TopicModel(topicId: 2, topicName: '토픽 2'),
+  ];
   final VoidCallback onReserve;
   final VoidCallback onCancel;
 
-  const RoomItem({
+  RoomItem({
     super.key,
     required this.room,
     required this.onReserve,
@@ -35,9 +40,9 @@ class RoomItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('주제: ${room.topicId}'),
+              Text('주제: ${getTopicNameByRoomId(room.topicId)}'),
               const SizedBox(height: 5),
-              Text('방이름: ${room.roomId}'),
+              Text('방이름: ${room.roomName}'),
               const SizedBox(height: 15),
               Text('시작: ${DateTimeHelper.formatDateTime(room.startTime!)}'),
               Text('종료: ${DateTimeHelper.formatDateTime(room.endTime!)}'),
@@ -65,5 +70,16 @@ class RoomItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String getTopicNameByRoomId(int topicId) {
+    try {
+      // topicList에서 room의 topicId와 일치하는 TopicModel의 topicName 반환
+      return topicList
+          .firstWhere((topic) => topic.topicId == topicId)
+          .topicName;
+    } catch (e) {
+      return 'Unknown Topic'; // 일치하는 topicId가 없을 경우 기본값 반환
+    }
   }
 }

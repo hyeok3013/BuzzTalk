@@ -11,12 +11,17 @@ class RoomRepository {
   //topicId를 입력할 경우 topicId에 해당하는 room 전부 가져옴, default는 방 전부를 가져옴
   Future<List<RoomModel>> getRoomList(List<int?>? topicIdList) async {
     String endpoint = '/room/list';
-    if (topicIdList != null) {
-      endpoint += '?topicId=$topicIdList';
+
+    if (topicIdList != null && topicIdList.isNotEmpty) {
+      // null 값 제거 후 쉼표로 구분된 문자열 생성
+      final filteredIds = topicIdList.where((id) => id != null).join(',');
+      endpoint += '?topicId=$filteredIds';
     }
 
+    // httpRequest.get이 실제 GET 요청을 보내는 메소드라고 가정합니다.
     final response = await httpRequest.get(endpoint);
 
+    // 응답이 리스트 형식으로 올 것으로 가정하고 이를 RoomModel 리스트로 변환
     return (response as List)
         .map((roomJson) => RoomModel.fromJson(roomJson as Map<String, dynamic>))
         .toList();
