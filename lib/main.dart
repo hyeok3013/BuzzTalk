@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-String ip = '192.168.123.102';
+String ip = '172.30.1.71';
 String serverUrl = 'http://$ip:3000';
 String serverWsUrl = 'http://$ip:3001/chat';
 
