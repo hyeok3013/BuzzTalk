@@ -60,7 +60,7 @@ class CreateRoomViewModel extends ChangeNotifier {
         print("Room Created Successfully.");
 
         // 방 생성이 성공한 후 홈 화면으로 이동
-        Navigator.pop(context);
+        context.replace('/'); // 홈 화면으로 이동
       } else {
         _errorMessage = response['error'] ?? 'Room creation failed';
         notifyListeners();
