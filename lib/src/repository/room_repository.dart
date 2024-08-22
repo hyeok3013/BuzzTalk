@@ -17,12 +17,11 @@ class RoomRepository {
   }) async {
     final body = {
       'topicIds': topicIds,
-      'limit': limit,
-      'cursorId': cursorId,
+      'limit': limit ?? 5, // limit을 설정 (기본값 5)
+      'cursorId': cursorId, // 커서 ID 추가
     };
 
     final response = await httpRequest.post('/list', body);
-    print(response['data']);
     if (response['status'] == 'success') {
       final rooms = response['data']['rooms'] as List;
       return rooms
