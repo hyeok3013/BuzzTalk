@@ -28,7 +28,8 @@ class _RoomListViewState extends State<RoomListView> {
   @override
   void initState() {
     super.initState();
-    roomListViewModel.roomListFetch(widget.selectedTopicIds);
+    roomListViewModel.roomListFetch(
+        topicIDList: widget.selectedTopicIds, limit: 5);
   }
 
   @override
@@ -38,8 +39,8 @@ class _RoomListViewState extends State<RoomListView> {
         builder: (context, viewModel) => Scaffold(
               body: RefreshIndicator(
                 onRefresh: () async {
-                  await roomListViewModel.roomListFetch(widget.selectedTopicIds,
-                      refresh: true);
+                  await roomListViewModel.roomListFetch(
+                      topicIDList: widget.selectedTopicIds);
                 },
                 child: ListView.builder(
                   itemCount: viewModel.roomList.length,
