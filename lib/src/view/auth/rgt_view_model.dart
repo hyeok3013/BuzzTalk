@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:alarm_app/src/repository/auth_repository.dart';
 import 'package:alarm_app/src/view/auth/login_view.dart';
 import 'package:alarm_app/util/auth_utils.dart';
+import 'package:alarm_app/util/error_pop_util.dart';
 
 class RgtViewModel extends ChangeNotifier {
   String _playerId = '';
@@ -15,7 +16,8 @@ class RgtViewModel extends ChangeNotifier {
   String? _passwordError;
 
   final AuthRepository _authRepository;
-  final AuthUtils _validator = AuthUtils(); // AuthUtils 인스턴스 생성
+  final AuthUtils _validator = AuthUtils();
+  final ErrorPopUtils _errorPopUtil = ErrorPopUtils();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
@@ -67,16 +69,15 @@ class RgtViewModel extends ChangeNotifier {
     _setLoadingState(true);
 
     if (!_validateInputs(context)) {
-      // context를 전달
       _setLoadingState(false);
       return;
     }
 
     try {
       final response = await _authRepository.register(_playerId, _password);
-      _handleResponse(context, response); // context를 전달
+      _handleResponse(context, response);
     } catch (e) {
-      _validator.showErrorDialog(context, '회원가입 실패', '잠시 후 다시 시도해주세요.');
+      _errorPopUtil.showErrorDialog(context, '회원가입 실패', '잠시 후 다시 시도해주세요.');
     } finally {
       _setLoadingState(false);
     }
@@ -88,7 +89,6 @@ class RgtViewModel extends ChangeNotifier {
   }
 
   bool _validateInputs(BuildContext context) {
-    // context를 인자로 추가
     if (!_validator.isValidPlayerId(_playerId)) {
       _playerIdError = '아이디 형식이 맞지 않습니다.';
       _clearPasswordFields();
@@ -102,7 +102,7 @@ class RgtViewModel extends ChangeNotifier {
     }
 
     if (!passwordsMatch()) {
-      _validator.showErrorDialog(context, '비밀번호 불일치', '다시 시도하세요');
+      _errorPopUtil.showErrorDialog(context, '비밀번호 불일치', '다시 시도하세요');
       _clearPasswordFields();
       return false;
     }
@@ -111,17 +111,10 @@ class RgtViewModel extends ChangeNotifier {
   }
 
   void _handleResponse(BuildContext context, Map<String, dynamic> response) {
-    // context를 인자로 추가
-    switch (response['status']) {
-      case 'success':
-        _navigateToLogin(context);
-        break;
-      case 'fail':
-        _validator.showErrorDialog(context, '회원가입 실패', response['error']);
-        break;
-      case 'error':
-      default:
-        _validator.showErrorDialog(context, '회원가입 실패', '잠시 후 다시 시도해주세요.');
+    if (response['result'] == true) {
+      _navigateToLogin(context);
+    } else {
+      _errorPopUtil.showErrorDialog(context, '회원가입 실패', response['msg']);
     }
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:alarm_app/src/view/auth/chg_pwd_view_model.dart';
 
-//dd
 class ChangePasswordView extends StatefulWidget {
   const ChangePasswordView({super.key});
 
@@ -114,33 +113,34 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                         oldPassword: _oldPasswordController.text,
                         newPassword: _newPasswordController.text,
                         newPasswordCheck: _newPasswordCheckController.text,
+                        context: context, // 여기에 context를 추가
                       );
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                        content: Text("Password changed successfully")),
+                      content: Text("비밀번호가 성공적으로 변경되었습니다."),
+                    ),
                   );
                   Navigator.pop(context); // 작업 후 이전 화면으로 돌아감
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Failed to change password: $e")),
+                    SnackBar(content: Text("비밀번호 변경에 실패했습니다: $e")),
                   );
                 }
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor:
-                    const Color.fromARGB(255, 20, 42, 128), // 텍스트 색상
-                minimumSize: const Size.fromHeight(48), // 버튼의 최소 높이 설정
+                backgroundColor: const Color.fromARGB(255, 20, 42, 128),
+                minimumSize: const Size.fromHeight(48),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0), // 버튼 모서리 둥글게 설정
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
               child: const SizedBox(
-                width: double.infinity, // 버튼의 너비를 최대화 (TextField 크기와 맞춤)
+                width: double.infinity,
                 child: Center(
                   child: Text(
                     "비밀번호 변경",
-                    style: TextStyle(fontSize: 16), // 텍스트 크기
+                    style: TextStyle(fontSize: 16),
                   ),
                 ),
               ),

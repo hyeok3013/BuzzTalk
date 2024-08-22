@@ -1,11 +1,8 @@
-import 'dart:convert';
-
-import 'package:alarm_app/main.dart';
 import 'package:alarm_app/src/repository/room_repository.dart';
 import 'package:alarm_app/src/repository/shared_preferences_repository.dart';
 import 'package:alarm_app/src/service/local_notification_service.dart';
 import 'package:alarm_app/src/view/base_view_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:alarm_app/util/error_pop_util.dart';
 import 'package:alarm_app/src/model/room_model.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -13,6 +10,7 @@ class RoomListViewModel extends BaseViewModel {
   final RoomRepository roomRepository;
   final LocalNotificationService localNotificationService;
   final SharedPreferencesRepository sharedPreferencesRepository;
+  final ErrorPopUtils _errorPopUtil = ErrorPopUtils(); // ErrorPopUtils 추가
 
   List<RoomModel> roomList = []; // 방 목록을 저장할 리스트
   bool isLoading = false; // 로딩 상태 관리
@@ -28,7 +26,8 @@ class RoomListViewModel extends BaseViewModel {
 
   // 서버에서 방 목록을 가져오는 메서드
   Future<void> roomListFetch(List<int>? topicIDList,
-      {bool refresh = false}) async {
+      {bool refresh = false, required BuildContext context}) async {
+    // BuildContext 추가
     // 이미 로딩 중이거나 추가로 가져올 데이터가 없으면 return
     if (isLoading || !hasMoreData) return;
 
@@ -65,6 +64,8 @@ class RoomListViewModel extends BaseViewModel {
       }
     } catch (e) {
       // 오류 처리
+      _errorPopUtil.showErrorDialog(
+          context, '방 목록 로드 실패', '방 목록을 불러오는데 실패했습니다.');
       print("방 목록 가져오기 실패: $e");
     } finally {
       isLoading = false;

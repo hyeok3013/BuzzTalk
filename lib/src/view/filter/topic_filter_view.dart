@@ -19,7 +19,7 @@ class _TopicFilterViewState extends State<TopicFilterView> {
   @override
   void initState() {
     super.initState();
-    topicFilterViewModel.loadTopics();
+    topicFilterViewModel.loadTopics(context); // BuildContext 전달
   }
 
   @override

@@ -24,12 +24,12 @@ class _RoomListViewState extends State<RoomListView> with InfiniteScrollMixin {
   @override
   void initState() {
     super.initState();
-    roomListViewModel.roomListFetch(widget.selectedTopicIds);
+    roomListViewModel.roomListFetch(widget.selectedTopicIds, context: context);
   }
 
   @override
   void onScrollEnd() {
-    roomListViewModel.roomListFetch(widget.selectedTopicIds);
+    roomListViewModel.roomListFetch(widget.selectedTopicIds, context: context);
   }
 
   @override
@@ -40,7 +40,7 @@ class _RoomListViewState extends State<RoomListView> with InfiniteScrollMixin {
         body: RefreshIndicator(
           onRefresh: () async {
             await roomListViewModel.roomListFetch(widget.selectedTopicIds,
-                refresh: true);
+                refresh: true, context: context);
           },
           child: ListView.builder(
             controller: scrollController, // 스크롤 컨트롤러 사용
@@ -49,12 +49,10 @@ class _RoomListViewState extends State<RoomListView> with InfiniteScrollMixin {
               if (index == viewModel.roomList.length) {
                 // 마지막 항목에서 로딩 인디케이터를 보여줌
                 if (viewModel.isLoading) {
-                  return const Expanded(
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(),
-                      ),
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
                     ),
                   );
                 } else {
