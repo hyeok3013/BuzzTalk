@@ -25,15 +25,6 @@ class RoomListViewModel extends BaseViewModel {
   });
 
   // 서버에서 방 목록을 가져오는 메서드
-<<<<<<< HEAD
-  Future<void> roomListFetch({
-    List<int>? topicIDList,
-    int? limit,
-    int? cursorId,
-  }) async {
-    try {
-      roomList = await roomRepository.getRoomList(
-=======
   Future<void> roomListFetch(List<int>? topicIDList,
       {bool refresh = false, required BuildContext context}) async {
     // BuildContext 추가
@@ -53,7 +44,6 @@ class RoomListViewModel extends BaseViewModel {
     try {
       // 서버에서 방 목록 가져오기 (커서 ID를 기준으로)
       final newRooms = await roomRepository.getRoomList(
->>>>>>> d7d980ea6f6553f50b613b397e9edb9d757377b6
         topicIds: topicIDList,
         limit: limit,
         cursorId: cursorId,
@@ -76,10 +66,6 @@ class RoomListViewModel extends BaseViewModel {
       // 데이터 변경 후 UI 업데이트
       notifyListeners();
     } catch (e) {
-<<<<<<< HEAD
-      // 오류 발생 시 에러 메시지 출력 및 UI에 반영
-      print('Failed to fetch room list: $e');
-=======
       // 오류 처리
       _errorPopUtil.showErrorDialog(
           context, '방 목록 로드 실패', '방 목록을 불러오는데 실패했습니다.');
@@ -87,7 +73,6 @@ class RoomListViewModel extends BaseViewModel {
     } finally {
       isLoading = false;
       notifyListeners(); // 데이터 로딩이 끝났음을 UI에 알림
->>>>>>> d7d980ea6f6553f50b613b397e9edb9d757377b6
     }
   }
 

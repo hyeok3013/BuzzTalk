@@ -24,44 +24,17 @@ class _RoomListViewState extends State<RoomListView> with InfiniteScrollMixin {
   @override
   void initState() {
     super.initState();
-<<<<<<< HEAD
-    roomListViewModel.roomListFetch(
-        topicIDList: widget.selectedTopicIds, limit: 5);
-=======
     roomListViewModel.roomListFetch(widget.selectedTopicIds, context: context);
   }
 
   @override
   void onScrollEnd() {
     roomListViewModel.roomListFetch(widget.selectedTopicIds, context: context);
->>>>>>> d7d980ea6f6553f50b613b397e9edb9d757377b6
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseView(
-<<<<<<< HEAD
-        viewModel: roomListViewModel,
-        builder: (context, viewModel) => Scaffold(
-              body: RefreshIndicator(
-                onRefresh: () async {
-                  await roomListViewModel.roomListFetch(
-                      topicIDList: widget.selectedTopicIds);
-                },
-                child: ListView.builder(
-                  itemCount: viewModel.roomList.length,
-                  itemBuilder: (context, index) {
-                    final room = viewModel.roomList.reversed.toList()[index];
-                    return RoomItem(
-                      room: room,
-                      onReserve: () => viewModel.bookScheduleChat(room),
-                      onCancel: () => viewModel.cancelScheduleChat(room),
-                    );
-                  },
-                ),
-              ),
-            ));
-=======
       viewModel: roomListViewModel,
       builder: (context, viewModel) => Scaffold(
         body: RefreshIndicator(
@@ -98,6 +71,5 @@ class _RoomListViewState extends State<RoomListView> with InfiniteScrollMixin {
         ),
       ),
     );
->>>>>>> d7d980ea6f6553f50b613b397e9edb9d757377b6
   }
 }
