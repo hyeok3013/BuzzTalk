@@ -27,7 +27,6 @@ class _HomeViewState extends State<HomeView> {
             viewModel.currentIndex == 0 ? '방 목록' : "마이",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          leading: Container(),
           actions: [
             viewModel.currentIndex == 0
                 ? IconButton(

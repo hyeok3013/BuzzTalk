@@ -33,7 +33,7 @@ class _TopicFilterViewState extends State<TopicFilterView> {
           title: const Text('주제별 필터'),
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              context.replace('/');
             },
             icon: const Icon(
               Icons.close,
