@@ -8,13 +8,19 @@ class TopicRepository {
 
   TopicRepository(this.httpRequest);
 
-  // 주제 목록 가져오기
+// 주제 목록 가져오기
   Future<List<TopicModel>> getTopicList() async {
     final response = await httpRequest.get('/topic/list');
-    return (response as List)
-        .map(
-            (roomJson) => TopicModel.fromJson(roomJson as Map<String, dynamic>))
-        .toList();
+
+    if (response['result'] == true) {
+      final List<dynamic> data = response['data'] as List<dynamic>;
+      return data
+          .map((roomJson) =>
+              TopicModel.fromJson(roomJson as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw Exception('Failed to load topics: ${response['msg']}');
+    }
   }
 
   // 주제별 방의 개수 가져오기
