@@ -18,7 +18,7 @@ class Login extends StatelessWidget {
       body: ChangeNotifierProvider(
         create: (_) => LoginViewModel(authRepository),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.only(right: 24.0, left: 12),
           child: Consumer<LoginViewModel>(
             builder: (context, viewModel, child) {
               return Column(
