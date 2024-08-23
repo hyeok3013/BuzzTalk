@@ -19,7 +19,7 @@ class _CreateRoomViewState extends State<CreateRoomView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<CreateRoomViewModel>().fetchTopics();
+      context.read<CreateRoomViewModel>().fetchTopics(context);
     });
   }
 

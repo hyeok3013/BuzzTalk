@@ -123,20 +123,20 @@ class _MyRoomViewState extends State<MyRoomView> {
                   /// 내가 예약한 목록 확인
                   Expanded(
                     child: ListView.builder(
-                      itemCount: viewModel.roomList.length,
+                      itemCount:
+                          viewModel.roomList.where((room) => room.book).length,
                       itemBuilder: (context, index) {
-                        final room =
-                            viewModel.roomList.reversed.toList()[index];
+                        final room = viewModel.roomList
+                            .where((room) => room.book)
+                            .toList()
+                            .reversed
+                            .toList()[index];
 
-                        return room.book
-                            ? RoomItem(
-                                room: room,
-                                onReserve: () =>
-                                    viewModel.bookScheduleChat(room),
-                                onCancel: () =>
-                                    viewModel.cancelScheduleChat(room),
-                              )
-                            : null;
+                        return RoomItem(
+                          room: room,
+                          onReserve: () => viewModel.bookScheduleChat(room),
+                          onCancel: () => viewModel.cancelScheduleChat(room),
+                        );
                       },
                     ),
                   ),

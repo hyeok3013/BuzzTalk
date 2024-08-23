@@ -17,20 +17,19 @@ class RoomRepository {
   }) async {
     final body = {
       'topicIds': topicIds,
-      'limit': limit,
-      'cursorId': cursorId,
+      'limit': limit ?? 5, // limit을 설정 (기본값 5)
+      'cursorId': cursorId, // 커서 ID 추가
     };
 
-    final response = await httpRequest.post('/list', body);
-    print(response['data']);
-    if (response['status'] == 'success') {
+    final response = await httpRequest.post('/room/getList', body);
+    if (response['result'] == true) {
       final rooms = response['data']['rooms'] as List;
       return rooms
           .map((roomJson) =>
               RoomModel.fromJson(roomJson as Map<String, dynamic>))
           .toList();
     } else {
-      throw Exception('Failed to load room list: ${response['error']}');
+      throw Exception('Failed to load room list: ${response['msg']}');
     }
   }
 
@@ -41,14 +40,19 @@ class RoomRepository {
 
   Future<List<Map<String, dynamic>>> getTopicList() async {
     final response = await httpRequest.get('/topic/list');
-    return (response as List)
-        .map((topic) => topic as Map<String, dynamic>)
-        .toList();
+    if (response['result'] == true) {
+      return (response['data'] as List)
+          .map((topic) => topic as Map<String, dynamic>)
+          .toList();
+    } else {
+      throw Exception('Failed to load topics: ${response['msg']}');
+    }
   }
 
   //수정
   Future<List<RoomModel>> getRoomListByIds(List<String> roomIds) async {
-    final response = await httpRequest.post('/room/ids', {'roomIds': roomIds});
+    final response =
+        await httpRequest.post('/room/getListByIds', {'roomIds': roomIds});
     return (response as List).map((json) => RoomModel.fromJson(json)).toList();
   }
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:alarm_app/src/model/room_model.dart';
 import 'package:alarm_app/src/repository/room_repository.dart';
+import 'package:alarm_app/util/error_pop_util.dart';
 import 'package:go_router/go_router.dart';
 
 class CreateRoomViewModel extends ChangeNotifier {
   final RoomRepository _roomRepository;
+  final ErrorPopUtils _errorPopUtil = ErrorPopUtils();
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -16,7 +18,7 @@ class CreateRoomViewModel extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   List<Map<String, dynamic>> get topics => _topics;
 
-  Future<void> fetchTopics() async {
+  Future<void> fetchTopics([BuildContext? context]) async {
     _isLoading = true;
     _errorMessage = null;
     notifyListeners();
@@ -24,12 +26,11 @@ class CreateRoomViewModel extends ChangeNotifier {
     try {
       _topics = await _roomRepository.getTopicList();
       _isLoading = false;
-      notifyListeners();
     } catch (e) {
       _isLoading = false;
       _errorMessage = 'Failed to fetch topics: $e';
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   Future<void> createRoom({
@@ -37,7 +38,7 @@ class CreateRoomViewModel extends ChangeNotifier {
     required int topicId,
     DateTime? startTime,
     required DateTime endTime,
-    required BuildContext context, // 추가된 BuildContext
+    required BuildContext context,
   }) async {
     _isLoading = true;
     _errorMessage = null;
@@ -53,32 +54,19 @@ class CreateRoomViewModel extends ChangeNotifier {
     try {
       final response = await _roomRepository.createRoom(roomModel);
 
-      _isLoading = false;
-      notifyListeners();
-
-      if (response['status'] == 'success') {
+      if (response['result'] == true) {
         print("Room Created Successfully.");
-
-        // 방 생성이 성공한 후 홈 화면으로 이동
         context.replace('/'); // 홈 화면으로 이동
       } else {
-        _errorMessage = response['error'] ?? 'Room creation failed';
-        notifyListeners();
-
-        // 에러가 있을 경우 스낵바로 사용자에게 알림
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(_errorMessage!)),
-        );
+        _errorMessage = response['msg'] ?? '방 생성에 실패했습니다.';
+        _errorPopUtil.showErrorDialog(context, '방 생성 실패', _errorMessage!);
       }
     } catch (e) {
+      _errorMessage = '방 생성 중 오류가 발생했습니다.';
+      _errorPopUtil.showErrorDialog(context, '오류', _errorMessage!);
+    } finally {
       _isLoading = false;
-      _errorMessage = 'An error occurred: $e';
       notifyListeners();
-
-      // 에러가 있을 경우 스낵바로 사용자에게 알림
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_errorMessage!)),
-      );
     }
   }
 }
