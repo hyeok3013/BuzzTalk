@@ -62,6 +62,9 @@ class RoomListViewModel extends BaseViewModel {
         bool isReserved = sharedPreferencesRepository.isReserved(room);
         room.book = isReserved;
       }
+
+      // 데이터 변경 후 UI 업데이트
+      notifyListeners();
     } catch (e) {
       // 오류 처리
       _errorPopUtil.showErrorDialog(

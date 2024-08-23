@@ -22,7 +22,7 @@ class _MyRoomViewState extends State<MyRoomView> {
   @override
   void initState() {
     super.initState();
-    myRoomViewModel.roomListFetch(null);
+    myRoomViewModel.roomListFetch();
   }
 
   @override

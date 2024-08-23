@@ -18,11 +18,12 @@ class MyRoomViewModel extends BaseViewModel {
 
   List<RoomModel> roomList = [];
 
-  MyRoomViewModel(
-      {required this.authRepository,
-      required this.roomRepository,
-      required this.localNotificationService,
-      required this.sharedPreferencesRepository});
+  MyRoomViewModel({
+    required this.authRepository,
+    required this.roomRepository,
+    required this.localNotificationService,
+    required this.sharedPreferencesRepository,
+  });
 
   void _showConfirmationSheet({
     required BuildContext context,
@@ -184,30 +185,41 @@ class MyRoomViewModel extends BaseViewModel {
     );
   }
 
-  Future<void> roomListFetch(List<int>? topicIDList) async {
-    //여기서 필터로 저정한 내용을 가져와야 함.
-    roomList = await roomRepository.getRoomList(
-        topicIds: topicIDList); // 서버에서 방 목록 가져오기
+  Future<void> roomListFetch({
+    List<int>? topicIDList,
+    int? limit,
+    int? cursorId,
+  }) async {
+    try {
+      roomList = await roomRepository.getRoomList(
+        topicIds: topicIDList,
+        limit: limit,
+        cursorId: cursorId,
+      );
 
-    // 방 목록을 가져온 후 각 방에 대한 예약 정보를 로컬에서 조회하여 설정
-    for (RoomModel room in roomList) {
-      bool isReserved = sharedPreferencesRepository.isReserved(room);
-      print('방 ${room.roomId} 예약 상태: $isReserved'); // 예약 여부 출력 (디버그용)
-      room.book = isReserved;
+      // 방 목록을 가져온 후 각 방에 대한 예약 정보를 로컬에서 조회하여 설정
+      for (RoomModel room in roomList) {
+        bool isReserved = sharedPreferencesRepository.isReserved(room);
+        print('방 ${room.roomId} 예약 상태: $isReserved'); // 예약 여부 출력 (디버그용)
+        room.book = isReserved;
+      }
 
-      // 각 방의 예약 정보를 처리하거나 UI에 반영
+      // 데이터 변경 후 UI 업데이트
+      notifyListeners();
+    } catch (e) {
+      // 오류 발생 시 에러 메시지 출력 및 UI에 반영
+      print('Failed to fetch room list: $e');
     }
-    // 데이터 변경 후 UI 업데이트
-    notifyListeners();
   }
 
   void bookScheduleChat(RoomModel room) {
     localNotificationService.scheduleNotification(
-        id: room.roomId!,
-        title: room.roomName,
-        body: '채팅이 시작되었습니다.',
-        scheduledDateTime: room.startTime!,
-        payload: room.roomId.toString());
+      id: room.roomId!,
+      title: room.roomName,
+      body: '채팅이 시작되었습니다.',
+      scheduledDateTime: room.startTime!,
+      payload: room.roomId.toString(),
+    );
 
     sharedPreferencesRepository.saveReservation(room);
     notifyListeners();
