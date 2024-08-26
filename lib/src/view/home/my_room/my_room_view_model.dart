@@ -1,7 +1,9 @@
 import 'package:alarm_app/src/model/room_model.dart';
+import 'package:alarm_app/src/model/topic_model.dart';
 import 'package:alarm_app/src/repository/auth_repository.dart';
 import 'package:alarm_app/src/repository/room_repository.dart';
 import 'package:alarm_app/src/repository/shared_preferences_repository.dart';
+import 'package:alarm_app/src/repository/topic_repository.dart';
 import 'package:alarm_app/src/service/local_notification_service.dart';
 import 'package:alarm_app/src/view/base_view_model.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +15,16 @@ import 'package:alarm_app/src/view/auth/chg_pwd_view_model.dart';
 class MyRoomViewModel extends BaseViewModel {
   final AuthRepository authRepository;
   final RoomRepository roomRepository;
+  final TopicRepository topicRepository;
   final LocalNotificationService localNotificationService;
   final SharedPreferencesRepository sharedPreferencesRepository;
 
   List<RoomModel> roomList = [];
+  List<TopicModel> topicList = []; // 방 목록을 저장할 리스트
 
   MyRoomViewModel(
       {required this.authRepository,
+      required this.topicRepository,
       required this.roomRepository,
       required this.localNotificationService,
       required this.sharedPreferencesRepository});
@@ -217,5 +222,9 @@ class MyRoomViewModel extends BaseViewModel {
     localNotificationService.cancelNotification(room.roomId!);
     sharedPreferencesRepository.removeReservation(room);
     notifyListeners();
+  }
+
+  void getTopicList() async {
+    topicList = await topicRepository.getTopicList();
   }
 }

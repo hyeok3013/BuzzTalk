@@ -13,6 +13,7 @@ class MyRoomView extends StatefulWidget {
 
 class _MyRoomViewState extends State<MyRoomView> {
   late final MyRoomViewModel myRoomViewModel = MyRoomViewModel(
+    topicRepository: context.read(),
     authRepository: context.read<AuthRepository>(),
     roomRepository: context.read(),
     localNotificationService: context.read(),
@@ -22,6 +23,7 @@ class _MyRoomViewState extends State<MyRoomView> {
   @override
   void initState() {
     super.initState();
+    myRoomViewModel.getTopicList();
     myRoomViewModel.roomListFetch(null);
   }
 
@@ -133,7 +135,7 @@ class _MyRoomViewState extends State<MyRoomView> {
                             .toList()[index];
 
                         return RoomItem(
-                          topicList: [],
+                          topicList: viewModel.topicList,
                           room: room,
                           onReserve: () => viewModel.bookScheduleChat(room),
                           onCancel: () => viewModel.cancelScheduleChat(room),

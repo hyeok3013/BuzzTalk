@@ -20,7 +20,7 @@ class RoomListViewModel extends BaseViewModel {
   bool isLoading = false; // 로딩 상태 관리
   bool hasMoreData = true; // 추가 데이터가 있는지 확인
   int? cursorId; // 커서 ID (마지막으로 가져온 방의 ID)
-  final int limit = 4; // 한 번에 불러올 방의 개수
+  final int limit = 12; // 한 번에 불러올 방의 개수
 
   RoomListViewModel({
     required this.roomRepository,

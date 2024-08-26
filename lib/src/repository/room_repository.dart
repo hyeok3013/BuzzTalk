@@ -17,7 +17,7 @@ class RoomRepository {
   }) async {
     final body = {
       'topicIds': topicIds,
-      'limit': limit ?? 5, // limit을 설정 (기본값 5)
+      'limit': limit ?? 12, // limit을 설정 (기본값 12)
       'cursorId': cursorId, // 커서 ID 추가
     };
 
