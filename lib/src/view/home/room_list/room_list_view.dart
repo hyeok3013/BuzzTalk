@@ -48,11 +48,13 @@ class _RoomListViewState extends State<RoomListView> with InfiniteScrollMixin {
             itemBuilder: (context, index) {
               if (index == viewModel.roomList.length) {
                 // 마지막 항목에서 로딩 인디케이터를 보여줌
-                if (viewModel.isLoading) {
+                if (viewModel.hasMoreData) {
                   return const Center(
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: Colors.red,
+                      ),
                     ),
                   );
                 } else {
