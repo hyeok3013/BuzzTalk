@@ -133,6 +133,7 @@ class _MyRoomViewState extends State<MyRoomView> {
                             .toList()[index];
 
                         return RoomItem(
+                          topicList: [],
                           room: room,
                           onReserve: () => viewModel.bookScheduleChat(room),
                           onCancel: () => viewModel.cancelScheduleChat(room),
