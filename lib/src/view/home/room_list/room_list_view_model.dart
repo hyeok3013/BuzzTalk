@@ -1,5 +1,7 @@
+import 'package:alarm_app/src/model/topic_model.dart';
 import 'package:alarm_app/src/repository/room_repository.dart';
 import 'package:alarm_app/src/repository/shared_preferences_repository.dart';
+import 'package:alarm_app/src/repository/topic_repository.dart';
 import 'package:alarm_app/src/service/local_notification_service.dart';
 import 'package:alarm_app/src/view/base_view_model.dart';
 import 'package:alarm_app/util/error_pop_util.dart';
@@ -8,11 +10,13 @@ import 'package:flutter/cupertino.dart';
 
 class RoomListViewModel extends BaseViewModel {
   final RoomRepository roomRepository;
+  final TopicRepository topicRepository;
   final LocalNotificationService localNotificationService;
   final SharedPreferencesRepository sharedPreferencesRepository;
   final ErrorPopUtils _errorPopUtil = ErrorPopUtils(); // ErrorPopUtils 추가
 
   List<RoomModel> roomList = []; // 방 목록을 저장할 리스트
+  List<TopicModel> topicList = []; // 방 목록을 저장할 리스트
   bool isLoading = false; // 로딩 상태 관리
   bool hasMoreData = true; // 추가 데이터가 있는지 확인
   int? cursorId; // 커서 ID (마지막으로 가져온 방의 ID)
@@ -20,6 +24,7 @@ class RoomListViewModel extends BaseViewModel {
 
   RoomListViewModel({
     required this.roomRepository,
+    required this.topicRepository,
     required this.localNotificationService,
     required this.sharedPreferencesRepository,
   });
@@ -92,5 +97,9 @@ class RoomListViewModel extends BaseViewModel {
     localNotificationService.cancelNotification(room.roomId!);
     sharedPreferencesRepository.removeReservation(room);
     notifyListeners();
+  }
+
+  void getTopicList() async {
+    topicList = await topicRepository.getTopicList();
   }
 }

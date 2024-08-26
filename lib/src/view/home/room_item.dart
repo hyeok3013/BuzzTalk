@@ -11,7 +11,7 @@ import 'package:another_flushbar/flushbar.dart';
 
 class RoomItem extends StatelessWidget {
   final RoomModel room;
-  final List<TopicModel> topicList = [];
+  final List<TopicModel> topicList;
   final VoidCallback onReserve;
   final VoidCallback onCancel;
 
@@ -20,6 +20,7 @@ class RoomItem extends StatelessWidget {
     required this.room,
     required this.onReserve,
     required this.onCancel,
+    required this.topicList,
   });
 
   @override

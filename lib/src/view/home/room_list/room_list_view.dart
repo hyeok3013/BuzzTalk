@@ -16,6 +16,7 @@ class RoomListView extends StatefulWidget {
 
 class _RoomListViewState extends State<RoomListView> with InfiniteScrollMixin {
   late final RoomListViewModel roomListViewModel = RoomListViewModel(
+    topicRepository: context.read(),
     roomRepository: context.read(),
     localNotificationService: context.read(),
     sharedPreferencesRepository: context.read(),
@@ -24,6 +25,7 @@ class _RoomListViewState extends State<RoomListView> with InfiniteScrollMixin {
   @override
   void initState() {
     super.initState();
+    roomListViewModel.getTopicList();
     roomListViewModel.roomListFetch(widget.selectedTopicIds, context: context);
   }
 
@@ -64,6 +66,7 @@ class _RoomListViewState extends State<RoomListView> with InfiniteScrollMixin {
 
               final room = viewModel.roomList[index];
               return RoomItem(
+                topicList: viewModel.topicList,
                 room: room,
                 onReserve: () => viewModel.bookScheduleChat(room),
                 onCancel: () => viewModel.cancelScheduleChat(room),
