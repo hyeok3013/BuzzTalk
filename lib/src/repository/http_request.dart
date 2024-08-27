@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Http {
   final String baseUrl;
-  static final Http _instance = Http._internal('http://119.203.5.249:3000');
+  static final Http _instance = Http._internal('http://119.203.5.207:3000');
 
   factory Http() {
     return _instance;
